@@ -1,0 +1,925 @@
+package 银行存取款管理系统;
+
+import java.util.Random;
+import java.util.Scanner;
+import java.io.*;
+import java.nio.file.Files;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage; 
+public class Qx extends Application    //制作登录开户界面
+{   static Stage stage1;
+   public void start(Stage stage)   //登录开户界面
+   {Label wenben=new Label("欢迎使用光大银行!");
+	Button A1=new Button("开户");
+	Button A2=new Button("登录");
+	A1.setOnAction(even->chufa1());
+	A2.setOnAction(even->chufa2());
+	var p=new HBox();
+	p.setSpacing(50);
+	p.setPadding(new Insets(100,10,10,70));
+	p.getChildren().addAll(A1,A2);
+	GridPane p1=new GridPane();
+	var d=new HBox();
+	d.setSpacing(50);
+	d.setPadding(new Insets(50,10,10,85));
+	d.getChildren().addAll(wenben);
+	 p1.add(d, 1,2,2,5); 
+	 p1.add(p,2,2,2,5);
+	 Scene asd=new Scene(p1,300,150);
+	  stage.setTitle("银行存取款管理");
+	  stage.setScene(asd);
+	  stage1=stage;
+	  stage.show();
+   }
+    public void chufa1()  //开户跳转
+    {  
+		stage1.close();
+	    new kaihu().show();
+    }
+    public void chufa2()  //登录跳转
+    {
+    	stage1.close();
+    	new denglu().show();
+    }
+	  public static void main(String[] args) 
+	  {
+		Application.launch(args);     //主函数运行
+	  }	
+}
+
+class denglu extends Stage      
+{    static String name;
+     static String kahao;
+     static String mima;
+     static int yue;
+     static String shenfeng;
+     TextField a1=new TextField();
+     PasswordField a2=new PasswordField();
+     Label p3=new Label();
+     Label p4=new Label();
+     Label p1=new Label("卡号");
+     Label p2=new Label("密码");
+     Label p5=new Label();
+  public  denglu()                     //登录界面
+ {     
+	  Button c1=new Button("确认");
+	  Button c2=new Button("重置");
+	  Button c3=new Button("忘记密码");
+	  Button c4=new Button("返回");
+	  c4.setOnAction(even->fanhui());
+	  c2.setOnAction(even->chongzhi());
+	  c1.setOnAction(event->panduan1());
+	  c3.setOnAction(even->wangji());
+	  var w=new HBox();
+	  w.setSpacing(20);
+	  w.setPadding(new Insets(10,20,10,20));
+	  w.getChildren().addAll(c1,c2,c3,c4);
+	  
+	  GridPane as=new GridPane();
+	  as.setHgap(10);
+	  as.setVgap(10);
+	  as.setPadding(new Insets(10,10,10,10));
+	  
+	  as.add(p1, 0, 0);
+	  as.add(p2, 0, 1);
+	  as.add(p3, 3, 0);
+	  as.add(a1, 1, 0 );
+	  as.add(a2, 1, 1);
+	  as.add(p4, 2, 1);
+	  as.add(w, 0, 2,2,1);
+	  as.add(p5,1,3);
+	  
+	  Scene asd=new Scene(as,350,150);
+	  this.setTitle("银行存取款管理");
+	  this.setScene(asd);
+	  this.show();
+}
+  public void fanhui()     //返回方法
+  {
+	  this.close();
+	  Qx.stage1.show();
+  }
+  public void chongzhi()   //重置方法
+  {
+	  a1.clear();
+	  a2.clear();
+  }
+  public void wangji()
+  {
+	  this.close();
+	  new wangji().show();
+  }
+public void panduan1() 
+{   try 
+   {
+	if(a1.getText()!=null&&a2.getText()!=null)
+	{ 
+	String temp = null;
+	File file = new File("C:\\Users\\ASUS\\Desktop","银行储存.txt" ) ;//打开文件
+	Scanner sc =new Scanner(file);	
+     while (sc.hasNext()) 
+     {
+      temp = sc.nextLine();   
+      String[] buff = temp.split(" ");//temp按空格分开存入buff数组
+      String a=buff[0];//
+      String b=buff[3];
+        if(a1.getText().equals(a)&&a2.getText().equals(b))
+        {p5.setText("登录成功");
+         name=buff[1];
+         kahao=buff[0];
+         shenfeng=buff[2];
+         mima=buff[3];
+         yue=0;
+         this.close();
+         new zhuye().show();
+        }
+        else
+	    {p5.setText("账号或密码错误");}
+       } 
+	 }
+	else 
+    {p5.setText("不能为空");}		
+   }
+   catch (FileNotFoundException e) 
+    {
+		// TODO 自动生成的 catch 块
+		e.printStackTrace();
+	}
+}
+}
+ class wangji extends Stage    //忘记密码
+ {   TextField a1=new TextField();
+     TextField a2=new TextField();
+     TextField a4=new TextField();
+     Label b4=new Label("卡号");
+     Label b1=new Label("身份证号");
+     Label b2=new Label("新密码");
+     Label b3=new Label();
+     Button c1=new Button("确认");
+     Button c2=new Button("返回");
+	 public wangji()
+	 {
+		 c1.setOnAction(even->queren());
+		 c2.setOnAction(even->fanhui());
+		 var w=new HBox();
+		  w.setSpacing(60);
+		  w.setPadding(new Insets(0,20,10,10));
+		  w.getChildren().addAll(c1,c2);
+		  GridPane as=new GridPane();
+		  as.setHgap(10);
+		  as.setVgap(10);
+		  as.setPadding(new Insets(10,10,10,10));
+		  as.add(b4, 0, 0);
+		  as.add(a4, 1, 0);
+		  as.add(b1, 0, 1);
+		  as.add(a1, 1, 1);
+		  as.add(b2, 0, 2);
+		  as.add(a2, 1, 2);
+		  as.add(b3, 1, 3);
+		  as.add(w, 1, 4);
+		  Scene asd=new Scene(as,300,170);
+		  this.setTitle("忘记密码");
+		  this.setScene(asd);
+		  this.show();
+	 }
+	 private void fanhui() 
+	 {
+		this.close();
+		new denglu().show();
+	 }
+	public void queren()
+	 { int i = 0;
+	   File file = new File( "C:\\Users\\ASUS\\Desktop","银行储存.txt" ) ;//打开文件
+	   try {
+		   var du=new FileReader(file);
+			BufferedReader br = new BufferedReader(du);
+			var du1=new FileWriter(file,true);
+			BufferedWriter br1 = new BufferedWriter(du1);
+			String p1=null;
+			String[] p2;
+			
+		if(a1.getText().length()==0&&a2.getText().length()==0)
+		{	b3.setText("内容不能为空");
+		}
+		else
+			while((p1= br.readLine())!= null) 
+			{ 
+			  p2=p1.split(" ");
+			  if(p2[2].equals(a1.getText())&&p2[0].equals(a4.getText()))
+			  {  br1.append(p2[0]);
+				 br1.append(" ");
+				 br1.append(p2[1]);
+				 br1.append(" ");
+				 br1.append(p2[2]);
+				 br1.append(" ");
+				 br1.append(a2.getText());
+				 br1.append(" ");
+				 br1.append(p2[4]+"\n");
+				 b3.setText("修改成功");
+				 a1.clear();
+				 a2.clear();
+				 i++;
+	          }
+			  else
+			  {	 br1.append(p1+"\n"); 
+			  }
+			}
+		    if(p1==null&&i==0)
+		    {
+		    	b3.setText("身份证号错误或卡号错误");
+		    }
+			FileWriter asd=new FileWriter(file,false);
+			asd.close();
+			br1.close();
+			du1.close();
+			du.close();
+			br.close(); 
+		  }
+	     catch (IOException e)
+	    {
+		 e.printStackTrace();
+	    }
+	 
+     }
+}
+ class kaihu extends Stage//开户界面
+ {  int k;
+	 Label p5=new Label(" ");
+	TextField a1=new TextField();
+	TextField a2=new TextField();
+	TextField a3=new TextField();
+	PasswordField a4=new PasswordField();
+   public kaihu() 
+   {
+	Label p1=new Label("用户名");
+	Label p2=new Label("身份证");
+	Label p3=new Label("新密码");
+	Label p4=new Label("确认密码");
+	
+	Button b1=new Button("确认");
+	b1.setOnAction(even->panduan());
+	Button b2=new Button("重置");
+	b2.setOnAction(even->chongzhi());
+	Button b3=new Button("返回");
+	b3.setOnAction(even->fanhui());
+	HBox c1=new HBox();
+	c1.setSpacing(30);
+	c1.setPadding(new Insets(10,20,10,5));
+	c1.getChildren().addAll(b1,b2,b3);
+	GridPane d1=new GridPane();
+  	 d1.setHgap(10);
+  	 d1.setVgap(10);
+  	 d1.setPadding(new Insets(10,10,10,10));
+  	 d1.add(p1, 0, 0);
+  	 d1.add(p2, 0, 1);
+  	 d1.add(p3, 0, 2);
+  	 d1.add(p4, 0, 3);
+  	 d1.add(a1, 1, 0);
+ 	 d1.add(a2, 1, 1);
+ 	 d1.add(a3, 1, 2);
+ 	 d1.add(a4, 1, 3);
+ 	 d1.add(c1, 1, 5);
+ 	 d1.add(p5, 1, 4);
+ 	 Scene asd=new Scene(d1,300,230);
+ 	  this.setTitle("银行存取款管理");
+ 	  this.setScene(asd);
+ 	  this.show();
+   }
+   public void fanhui()
+   {
+ 	  this.close();
+ 	  Qx.stage1.show();
+   }
+    public void panduan()    //判断是否注册成功
+   { 
+	  if(a1.getText()!=null&&!a1.getText().isEmpty()&&a2.getText()!=null&&!a2.getText().isEmpty()&&a3.getText()!=null&&!a3.getText().isEmpty()&&a4.getText()!=null&&!a4.getText().isEmpty())
+      {
+	    if(a2.getText().length()!=18)
+	    {
+		 p5.setText("身份证数必须为18位");
+		 a2.clear();
+	    }
+	    else if(!a3.getText().equals(a4.getText()))
+	    {
+		   p5.setText("密码不一致");
+		   a3.clear();
+		   a4.clear();
+	    }
+	    else
+	   { try
+         { 
+	     File file = new File( "C:\\Users\\ASUS\\Desktop","银行储存.txt" ) ;//打开文件
+         FileWriter fileWriter = null ;
+         BufferedWriter bufferedWriter = null ;//FileWriter和BufferedWriter的初始化需要监听，此处只定义不初始化
+         FileReader du=new  FileReader(file);
+         BufferedReader du1=new  BufferedReader(du);
+         //Scanner sc = null ; //同上
+         Random random = new Random();
+	     k=random.nextInt(900000000)+100000000;
+         yonghu[] stu = new yonghu[3] ;
+           String p1;
+ 		   String[] p2;
+ 		     while((p1= du1.readLine())!= null)     //判断身份号码是否重复
+ 		     { 
+ 		        p2=p1.split(" ");
+ 		        if(p2[0].equals(k));
+ 		        { k=random.nextInt(900000000)+100000000;}
+ 		     }
+ 		        stu[0] = new yonghu(String.valueOf(k),a1.getText(),a2.getText(),a4.getText(),0) ;
+                fileWriter = new FileWriter( file,true ) ;
+                bufferedWriter = new BufferedWriter( fileWriter );
+                bufferedWriter.write(stu[0].kahao) ;
+                bufferedWriter.write(" ") ;
+                bufferedWriter.write(stu[0].name) ;
+                bufferedWriter.write(" ") ;
+                bufferedWriter.write(stu[0].shenfeng);
+                bufferedWriter.write(" ") ;
+                bufferedWriter.write(stu[0].mima);
+                bufferedWriter.write(" ") ;
+                bufferedWriter.write("0");
+                bufferedWriter.write(" ") ;
+                bufferedWriter.newLine() ; //换行
+                p5.setText("注册成功,您的卡号为"+k);
+                a3.clear();
+                a4.clear();
+ 		        
+ 		     
+ 		    bufferedWriter.flush();//刷新缓冲流
+            bufferedWriter.close(); //随手关闭文件,此处注意关闭顺序不能错误
+            fileWriter.close();
+         }
+         catch( Exception e )
+         {
+            System.out.println( "Error." ) ;
+         }
+      }
+	    }
+      else
+      p5.setText("不能为空");
+     } 
+   public void chongzhi()  //重置
+   {
+	   a1.clear();
+	   a2.clear();
+	   a3.clear();
+	   a4.clear();
+   }
+}
+ 
+class zhuye extends Stage   //主操作页面
+ {
+	    public zhuye()
+	    {
+		 Label a1=new Label("光大银行系统");
+		 Button b1=new Button("查询信息");
+		 Button b2=new Button("存款");
+		 Button b3=new Button("取款");
+		 Button b4=new Button("修改密码");
+		 Button b5=new Button("退出");
+		 Button b6=new Button("销户");
+		 b1.setOnAction(even->chaxun());
+		 b2.setOnAction(even->cunkuan());
+		 b3.setOnAction(even->qukuan());
+		 b4.setOnAction(even->xiugai());
+		 b5.setOnAction(even->tuichu());
+		 b6.setOnAction(even->xiaohu());
+		 GridPane as=new GridPane();
+	   	  as.setHgap(10);
+	   	  as.setVgap(10);
+	      as.setPadding(new Insets(10,10,10,10));
+	      as.add(a1, 2, 0);
+	   	  as.add(b1, 1, 1);
+	   	  as.add(b2, 3, 3);
+	   	  as.add(b3, 3, 1);
+	   	  as.add(b4, 1, 3);
+	   	  as.add(b5, 3, 5);
+	   	  as.add(b6, 1, 5);
+	   	  Scene asd=new Scene(as,250,170);
+	   	  this.setTitle("菜单");
+	   	  this.setScene(asd);
+	   	  this.show();
+	     }
+
+		public void xiaohu() {
+			this.close();
+			new xiaohu().show();
+			
+		}
+
+		public void qukuan() 
+		{
+			this.close();
+			new qukuan().show();
+		}
+
+		public  void cunkuan() 
+		{
+			this.close();
+			new cunkuan().show();
+			
+		}
+		public void xiugai() 
+		{
+			this.close();
+			new xiugai().show();
+		}
+
+		public void tuichu() 
+		{
+			this.close();
+		}
+
+		public void chaxun() 
+		{
+			this.close();
+			new xinxi().show();
+		}
+}
+   class xinxi extends Stage      //信息展示
+   {   public xinxi() 
+      {
+	   Label a1=new Label("用户名");
+	   Label a2=new Label("卡号");
+	   Label a3=new Label("身份证");
+	   Label a4=new Label("余额");
+	   Label b1=new Label(denglu.name);
+	   Label b2=new Label(denglu.kahao);
+	   Label b3=new Label(denglu.shenfeng);
+	   Label b4=new Label(String.valueOf(denglu.yue));
+	   Button c1=new Button("返回");
+	   c1.setOnAction(even->fanhui());
+	   GridPane as=new GridPane();
+	   	  as.setHgap(10);
+	   	  as.setVgap(10);
+	      as.setPadding(new Insets(10,10,10,10));
+	      as.add(a1, 1, 0);
+	   	  as.add(a2, 1, 1);
+	   	  as.add(a3, 1, 2);
+	   	  as.add(a4, 1, 3);
+	   	  as.add(b1, 2, 0);
+	   	  as.add(b2, 2, 1);
+	   	  as.add(b3, 2, 2);
+	   	  as.add(b4, 2, 3);
+	   	  as.add(c1, 5, 5);
+	   	  Scene asd=new Scene(as,300,170);
+	   	  this.setTitle("个人信息");
+	   	  this.setScene(asd);
+	   	  this.show();
+      }
+
+      public  void fanhui()
+     {
+	    this.close();
+		new zhuye().show();
+	
+     }
+   }
+   class xiaohu extends Stage
+   {   
+	   public xiaohu()
+       {
+	   Label a1=new Label("是否需要销户");
+	   Button b1=new Button("是");
+	   Button b2=new Button("否");
+	   b1.setOnAction(even->shi());
+	   b2.setOnAction(even->fou());
+	   GridPane as=new GridPane();
+	   as.setHgap(10);
+	   as.setVgap(10);
+	   as.setPadding(new Insets(10,10,10,10));
+	   as.add(a1, 3, 1);
+	   as.add(b1, 2, 6);
+	   as.add(b2, 4, 6);
+	   Scene asd=new Scene(as,200,150);
+	      this.setTitle("销户");
+	   	  this.setScene(asd);
+	   	  this.show();
+       }
+	   public void shi()
+	   {
+		   var fi=new File("C:\\Users\\ASUS\\Desktop","银行储存.txt");
+		   FileReader du;
+		try {
+			du = new FileReader(fi);
+			BufferedReader br = new BufferedReader(du);
+			var du1=new FileWriter(fi,true);
+			BufferedWriter br1 = new BufferedWriter(du1);
+			String p1;
+			String[] p2;
+			int yu=0;
+			while((p1= br.readLine())!= null) 
+			{ 
+			  p2=p1.split(" ");
+			  if(p2[0].equals(denglu.kahao)&&p2[3].equals(denglu.mima))
+			  {  
+				 br1.append("");
+	          }
+			  else
+			  {	 br1.append(p1+"\n"); 
+			  }	
+		    }
+			FileWriter asd=new FileWriter(fi,false);
+			asd.close();
+			br1.close();
+			du1.close();
+			du.close();
+			br.close();
+			this.close();
+			new cgxh().show();
+		  }
+		 catch (FileNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+			
+	   }
+	   public void fou()
+	   {
+		  this.close();
+		  new zhuye().show();
+	   }
+   }
+ class cgxh extends Stage
+ {
+	 public cgxh()
+	 {Label a1=new Label("成功销户");
+	 Button b2=new Button("退出");
+	 b2.setOnAction(even->tuichu());
+	 GridPane as=new GridPane();
+	   as.setHgap(10);
+	   as.setVgap(10);
+	   as.setPadding(new Insets(10,10,10,10));
+	   as.add(a1, 3, 1);
+	   as.add(b2, 4, 6);
+	   Scene asd=new Scene(as,200,150);
+	   	  this.setScene(asd);
+	   	  this.show();
+	 }
+	 public void tuichu()
+	 {
+		 this.close();
+	 }
+ }
+class cunkuan extends Stage           //存款类
+{     Label a1=new Label("您当前的余额");
+      Label a2=new Label("请输入存款金额");
+      Label a3=new Label(String.valueOf(denglu.yue));   //显示余额
+      TextField b1=new TextField(); //输入要存入的钱
+      Label a4=new Label(b1.getText());   //显示存入的钱
+      Button c1=new Button("确认");
+      Button c2=new Button("返回");
+      Button c3=new Button("重置");
+    public cunkuan()
+    { c1.setOnAction(even->queren());
+      c2.setOnAction(even->fanhui());
+      c3.setOnAction(even->chongzhi());
+      var w=new HBox();
+ 	  w.setSpacing(40);
+ 	  w.setPadding(new Insets(10,20,10,20));
+ 	  w.getChildren().addAll(c1,c2,c3);
+      GridPane as=new GridPane();
+	  as.setHgap(10);
+	  as.setVgap(10);
+	  as.setPadding(new Insets(10,10,10,10));
+	  as.add(a1, 1, 0);
+	  as.add(a2, 1, 2);
+	  as.add(a3, 2, 0);
+   	  as.add(b1, 2, 2);
+   	  as.add(a4, 1, 3);
+   	  as.add(w,1,4,2,1);
+   	  Scene asd=new Scene(as,300,150);
+ 	  this.setTitle("存款");
+ 	  this.setScene(asd);
+ 	  this.show();
+    }
+    public void queren() 
+    {     var fi=new File("C:\\Users\\ASUS\\Desktop","银行储存.txt");
+    if(Integer.parseInt(b1.getText())<=0)
+    {  b1.clear();
+       a4.setText("输入的金额必须大于0");
+    }
+    else
+    {
+	  try 
+	  {
+		var du=new FileReader(fi);
+		BufferedReader br = new BufferedReader(du);
+		var du1=new FileWriter(fi,true);
+		BufferedWriter br1 = new BufferedWriter(du1);
+		String p1;
+		String[] p2;
+		int yu=0;
+		while((p1= br.readLine())!= null) 
+		{ 
+		  p2=p1.split(" ");
+		  if(p2[0].equals(denglu.kahao)&&p2[3].equals(denglu.mima))
+        {  yu=denglu.yue+(Integer.parseInt(b1.getText()));
+			 br1.append(denglu.kahao);
+			 br1.append(" ");
+			 br1.append(denglu.name);
+			 br1.append(" ");
+			 br1.append(denglu.shenfeng);
+			 br1.append(" ");
+			 br1.append(denglu.mima);
+			 br1.append(" ");
+			 br1.append(String.valueOf(yu)+"\n");
+			 denglu.yue=yu;
+			 a3.setText(String.valueOf(yu));
+			 a4.setText("已成功存入"+b1.getText()+"元");
+			 b1.clear();
+        }
+		  else
+		  {	 br1.append(p1+"\n"); 
+		     
+		  }	
+	    }
+		FileWriter asd=new FileWriter(fi,false);
+		asd.close();
+		br1.close();
+		du1.close();
+		du.close();
+		br.close();
+		 Label a4=new Label("已存入"+b1.getText());
+	  }
+	  catch (FileNotFoundException e) 
+	  {
+		e.printStackTrace();
+	  }
+	  catch (IOException e) 
+	  {
+		e.printStackTrace();
+	  } 
+    }
+}
+	public void chongzhi() 
+    {
+		b1.clear();
+		
+	}
+	public void fanhui() 
+    {
+    	this.close();
+    	new zhuye().show();
+    }	
+}
+class qukuan extends Stage //取款类
+{ Label a1=new Label("您当前的余额");
+Label a2=new Label("请输入取款金额");
+Label a3=new Label(String.valueOf(denglu.yue)); //显示余额
+TextField b1=new TextField(); //输入要取出的钱
+Label a4=new Label(); //显示取出的钱
+Button c1=new Button("确认");
+Button c2=new Button("返回");
+Button c3=new Button("重置");
+public qukuan()
+{ c1.setOnAction(even->queren());
+c2.setOnAction(even->fanhui());
+c3.setOnAction(even->chongzhi());
+var w=new HBox();
+w.setSpacing(40);
+w.setPadding(new Insets(10,20,10,20));
+w.getChildren().addAll(c1,c2,c3);
+GridPane as=new GridPane();
+as.setHgap(10);
+as.setVgap(10);
+as.setPadding(new Insets(10,10,10,10));
+as.add(a1, 1, 0);
+as.add(a2, 1, 2);
+as.add(a3, 2, 0);
+as.add(b1, 2, 2);
+as.add(a4, 1, 3);
+as.add(w,1,4,2,1);
+Scene asd=new Scene(as,300,150);
+this.setTitle("取款");
+this.setScene(asd);
+this.show();
+}
+public void queren() 
+{ var fi=new File("C:\\Users\\ASUS\\Desktop","银行储存.txt");
+if(Integer.parseInt(b1.getText())<=0)
+{ b1.clear();
+a4.setText("输入的金额必须大于0");
+}
+else if(Integer.parseInt(b1.getText())>denglu.yue)
+{
+a4.setText("余额不足");
+}
+else
+{
+try 
+{
+var du=new FileReader(fi);
+BufferedReader br = new BufferedReader(du);
+var du1=new FileWriter(fi,true);
+BufferedWriter br1 = new BufferedWriter(du1);
+String p1;
+String[] p2;
+int yu=0;
+while((p1= br.readLine())!= null) 
+{ 
+p2=p1.split(" ");
+if(p2[0].equals(denglu.kahao)&&p2[3].equals(denglu.mima))
+{ yu=denglu.yue-(Integer.parseInt(b1.getText()));
+br1.append(denglu.kahao);
+br1.append(" ");
+br1.append(denglu.name);
+br1.append(" ");
+br1.append(denglu.shenfeng);
+br1.append(" ");
+br1.append(denglu.mima);
+br1.append(" ");
+br1.append(String.valueOf(yu)+"\n");
+denglu.yue=yu;
+a3.setText(String.valueOf(yu));
+a4.setText("已成功取出"+b1.getText()+"元");
+b1.clear();
+}
+else
+{ br1.append(p1+"\n"); 
+} 
+}
+FileWriter asd=new FileWriter(fi,false);
+asd.close();
+br1.close();
+du1.close();
+du.close();
+br.close();
+Label a4=new Label("已取出"+b1.getText());
+}
+catch (FileNotFoundException e) 
+{
+e.printStackTrace();
+}
+catch (IOException e) 
+{
+e.printStackTrace();
+} 
+}
+}
+public void chongzhi() 
+{
+b1.clear(); 
+}
+public void fanhui() 
+{
+this.close();
+new zhuye().show();
+}
+}
+    
+class xiugai extends Stage
+{
+	Label a1=new Label("原密码");
+	Label a2=new Label("新密码");
+	Label a3=new Label("确认密码");
+	Label a4=new Label();
+	TextField b1=new TextField();
+	TextField b2=new TextField();
+	TextField b3=new TextField();
+	Button c1=new Button("确认");
+	Button c2=new Button("返回");
+	Button c3=new Button("重置");
+    public xiugai()
+	{ c1.setOnAction(even->queren());
+      c2.setOnAction(even->fanhui());
+      c3.setOnAction(even->chongzhi());
+	  var w=new HBox();
+	  w.setSpacing(40);
+	  w.setPadding(new Insets(10,20,10,20));
+	  w.getChildren().addAll(c1,c2,c3);
+	  GridPane as=new GridPane();
+	  as.setHgap(10);
+      as.setVgap(10);
+	  as.setPadding(new Insets(10,10,10,10));
+	  as.add(a1, 1, 1);
+	  as.add(a2, 1, 2);
+	  as.add(a3, 1, 3);
+	  as.add(b1, 2, 1);
+	  as.add(b2, 2, 2);
+	  as.add(b3, 2, 3);
+	  as.add(a4, 5, 4);
+	  as.add(w, 1, 4,3,1);
+	  Scene asd=new Scene(as,350,200);
+ 	  this.setTitle("修改密码");
+ 	  this.setScene(asd);
+ 	  this.show();
+	}
+   public void queren() 
+   {
+   var fi=new File("C:\\Users\\ASUS\\Desktop","银行储存.txt");
+   if(!b1.getText().equals(denglu.mima))
+   {  b1.clear();
+      a4.setText("输入的原密码错误");
+   }
+   else if(!b2.getText().equals(b3.getText()))
+   {
+	   a4.setText("新密码不一致");
+   }
+   else
+   {
+	  try 
+	  {
+		var du=new FileReader(fi);
+		BufferedReader br = new BufferedReader(du);
+		var du1=new FileWriter(fi,true);
+		BufferedWriter br1 = new BufferedWriter(du1);
+		String p1;
+		String[] p2;
+		while((p1= br.readLine())!= null) 
+		{ 
+		  p2=p1.split(" ");
+		  if(p2[0].equals(denglu.kahao)&&p2[3].equals(denglu.mima))
+       {    
+			 br1.append(denglu.kahao);
+			 br1.append(" ");
+			 br1.append(denglu.name);
+			 br1.append(" ");
+			 br1.append(denglu.shenfeng);
+			 br1.append(" ");
+			 br1.append(b3.getText());
+			 br1.append(" ");
+			 br1.append(denglu.yue+"\n");
+			 denglu.mima=b3.getText();
+			 a4.setText("修改成功");
+			 b1.clear();
+			 b2.clear();
+			 b3.clear();
+       }
+		  else
+		  {	 br1.append(p1+"\n"); 
+		     
+		  }	
+	    }
+		FileWriter asd=new FileWriter(fi,false);
+		asd.close();
+		br1.close();
+		du1.close();
+		du.close();
+		br.close(); 
+	  }
+	  catch (FileNotFoundException e) 
+	  {
+		e.printStackTrace();
+	  }
+	  catch (IOException e) 
+	  {
+		e.printStackTrace();
+	  } 
+   }
+}
+	public void chongzhi() 
+    {
+		b1.clear();
+		
+	}
+	public void fanhui() 
+   {
+  	this.close();
+  	new zhuye().show();
+   }
+    
+}
+ class yonghu
+{
+    String kahao ;
+    String name ;
+    String mima;
+	 int yue;
+	 String shenfeng;
+ 
+    public yonghu()
+    {
+    	
+    }
+    public yonghu( String kahao , String name , String shenfeng,String mima,int yue )     //有参构造方便后续
+    {   this.yue=yue;
+        this.kahao = kahao ;
+        this.name = name ;
+        this.shenfeng = shenfeng ;
+        this.mima=mima;
+    }
+}
+ 
+
